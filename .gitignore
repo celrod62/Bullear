@@ -55,3 +55,4 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+/.vs/Bullear/CopilotIndices/17.14.1204.46620
