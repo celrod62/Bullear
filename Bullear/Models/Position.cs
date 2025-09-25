@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BullearApp.Models
+namespace Bullear.Models
 {
     [Table("Positions")]
     public class Position
