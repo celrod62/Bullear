@@ -67,3 +67,7 @@ nunit-*.xml
 /.vs/Bullear/v17/.suo
 /.vs/Bullear/v17/DocumentLayout.backup.json
 /.vs/Bullear/v17/DocumentLayout.json
+/.vs/Bullear/DesignTimeBuild/.dtbcache.v2
+/.vs/ProjectEvaluation/bullear.metadata.v9.bin
+/.vs/ProjectEvaluation/bullear.projects.v9.bin
+/.vs/ProjectEvaluation/bullear.strings.v9.bin
