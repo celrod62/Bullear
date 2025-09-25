@@ -1,31 +1,46 @@
 @page "/upload"
+@using Microsoft.AspNetCore.Components.Forms
 @inject TradeService TradeService
 
 <PageTitle>File Upload</PageTitle>
 
 <div class="container-fluid">
-
-
-    <InputFile OnChange="@LoadFiles" multiple />
-
-
+    <InputFile key="@fileInputVersion"
+               OnChange="LoadFiles"
+               multiple="false" />
+    <p>@uploadMessage</p>
 </div>
 
-
 @code {
-    private InputFile? fileInput;
-    private IBrowserFile? selectedFile;
-    private bool isDragOver = false;
-    private bool isUploading = false;
-    private string uploadMessage = "";
-    private bool uploadSuccess = false;
     private int fileInputVersion = 0;
-    private int fileBrowserVersion = 0;
+    private IBrowserFile? selectedFile;
+    private string uploadMessage = "";
 
-
-    private void LoadFiles(InputFileChangeEventArgs e)
+    private async Task LoadFiles(InputFileChangeEventArgs e)
     {
+        // Confirm event firing
+        uploadMessage = "OnChange fired";
+        var file = e.File;
+        if (file is null)
+        {
+            uploadMessage = "No file selected.";
+            return;
+        }
+
+        selectedFile = file;
+
+        // Example: read first few bytes
+        using var stream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+        byte[] buffer = new byte[Math.Min(64, file.Size)];
+        await stream.ReadAsync(buffer, 0, buffer.Length);
+
+        // (Optional) call your service
+        // await TradeService.UploadAsync(file, stream);
+
+        uploadMessage = $"Loaded {file.Name} ({file.Size} bytes).";
+
+        // Allow selecting the same file again
+        fileInputVersion++;
+        StateHasChanged();
     }
-
-
 }
