@@ -1,5 +1,5 @@
-using BullearApp.Data;
-using BullearApp.Models;
+using Bullear.Data;
+using Bullear.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 

@@ -1,4 +1,5 @@
 @page "/upload"
+@inject IJSRuntime JSRuntime
 
 <PageTitle>File Upload</PageTitle>
 
@@ -26,7 +27,7 @@
                          @ondragover="HandleDragOver" 
                          @ondragleave="HandleDragLeave" 
                          @ondrop="HandleDrop"
-                         @onclick="() => fileInput.Click()">
+                         @onclick="TriggerFileInput">
                         
                         <div class="upload-content text-center">
                             <div class="upload-icon mb-3">
@@ -39,7 +40,8 @@
                     </div>
 
                     <!-- Hidden file input -->
-                    <InputFile id="fileInput" 
+                    <InputFile @ref="fileInput" 
+                               id="fileInput" 
                                class="d-none" 
                                OnChange="OnFileSelected" 
                                accept=".csv" />
@@ -221,46 +223,46 @@
 </style>
 
 @code {
+    private InputFile? fileInput;
     private IBrowserFile? selectedFile;
     private bool isDragOver = false;
     private bool isUploading = false;
     private string uploadMessage = "";
     private bool uploadSuccess = false;
 
+    private async Task TriggerFileInput()
+    {
+        await JSRuntime.InvokeVoidAsync("document.getElementById('fileInput').click");
+    }
+
     private void HandleDragOver(DragEventArgs e)
     {
-        e.PreventDefault();
         isDragOver = true;
     }
 
     private void HandleDragLeave(DragEventArgs e)
     {
-        e.PreventDefault();
         isDragOver = false;
     }
 
     private async Task HandleDrop(DragEventArgs e)
     {
-        e.PreventDefault();
         isDragOver = false;
 
-        var files = e.DataTransfer?.Files;
-        if (files != null && files.Length > 0)
-        {
-            var file = files[0];
-            await ProcessFile(file);
-        }
+        // For drag and drop, we'll trigger the file input click instead
+        // since Blazor doesn't directly support file access from drag events
+        await TriggerFileInput();
     }
 
-    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    private void OnFileSelected(InputFileChangeEventArgs e)
     {
         if (e.File != null)
         {
-            await ProcessFile(e.File);
+            ProcessFile(e.File);
         }
     }
 
-    private async Task ProcessFile(IBrowserFile file)
+    private void ProcessFile(IBrowserFile file)
     {
         // Validate file type
         if (!IsValidCsvFile(file))
