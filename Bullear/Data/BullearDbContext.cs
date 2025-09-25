@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using BullearApp.Models;
+using Bullear.Models;
 
-namespace BullearApp.Data
+namespace Bullear.Data
 {
     public class BullearDbContext : DbContext
     {
