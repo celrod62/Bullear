@@ -1,5 +1,6 @@
 using Bullear.Components;
 using Bullear.Data;
+using Bullear.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bullear
@@ -17,6 +18,9 @@ namespace Bullear
             // Add Entity Framework
             builder.Services.AddDbContext<BullearDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Add services
+            builder.Services.AddScoped<TradeService>();
 
             var app = builder.Build();
 
